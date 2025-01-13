@@ -1,0 +1,131 @@
+/* Estilos modernos y minimalistas */
+:root {
+    --primary-color: #3498db;
+    --background-color: #f5f6fa;
+    --text-color: #2c3e50;
+    --card-background: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+h1,
+h2 {
+    color: var(--text-color);
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+/* Estilos del formulario */
+.form-container {
+    background-color: var(--card-background);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+input {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.btn {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    width: 100%;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #2980b9;
+}
+
+/* Estilos de la lista de usuarios */
+.usuarios-container {
+    background-color: var(--card-background);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.usuarios-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.usuario-card {
+    background-color: var(--background-color);
+    padding: 1.5rem;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+
+.usuario-card:hover {
+    transform: translateY(-3px);
+}
+
+.usuario-card h3 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.usuario-card p {
+    color: var(--text-color);
+    margin-bottom: 1rem;
+}
+
+.usuario-card .card-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.usuario-card .btn {
+    flex: 1;
+}
+
+.usuario-card .btn:not(:last-child) {
+    margin-right: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 0.5rem;
+    }
+}

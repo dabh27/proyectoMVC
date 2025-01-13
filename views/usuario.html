@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Usuarios</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Gestión de Usuarios</h1>
+
+        <!-- Formulario para crear usuarios -->
+        <form id="usuarioForm" class="form-container">
+            <h2>Crear Usuario</h2>
+            <div class="form-group">
+                <input type="text" id="nombre" placeholder="Nombre" required>
+            </div>
+            <div class="form-group">
+                <input type="email" id="email" placeholder="Email" required>
+            </div>
+            <button type="submit" class="btn">Crear Usuario</button>
+        </form>
+        <!-- Lista de usuarios -->
+        <div class="usuarios-container">
+            <h2>Lista de Usuarios</h2>
+            <div id="listaUsuarios" class="usuarios-grid"></div>
+        </div>
+
+    </div>
+    <script>
+        // Función para cargar usuarios
+        async function cargarUsuarios() {
+            try {
+                const response = await fetch('/api/usuarios');
+                const usuarios = await response.json();
+                const listaUsuarios = document.getElementById('listaUsuarios');
+                listaUsuarios.innerHTML = '';
+
+                usuarios.forEach(usuario => {
+                    const usuarioElement = document.createElement('div');
+                    usuarioElement.className = 'usuario-card';
+                    usuarioElement.innerHTML = `
+ <h3>${usuario.nombre}</h3>
+ <p>${usuario.email}</p>
+ <div class="card-buttons">
+    <button class="btn" onclick="mostrarActualizar(${usuario.id}, '${usuario.nombre}', '${usuario.email}')">Actualizar</button>
+    <button class="btn btn-secondary" onclick="eliminarUsuario(${usuario.id})">Eliminar</button>
+    </div>
+ `;
+                    listaUsuarios.appendChild(usuarioElement);
+                });
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+
+        // Manejar el envío del formulario
+        document.getElementById('usuarioForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const nombre = document.getElementById('nombre').value;
+            const email = document.getElementById('email').value;
+            try {
+                await fetch('/api/usuarios', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ nombre, email })
+                });
+
+                document.getElementById('usuarioForm').reset();
+                cargarUsuarios();
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+
+        // Función para mostrar el formulario de actualización
+        async function mostrarActualizar(id, nombreActual, emailActual) {
+            const nombre = prompt('Nuevo nombre:', nombreActual);
+            const email = prompt('Nuevo email:', emailActual);
+
+            if (nombre && email) {
+                await actualizarUsuario(id, { nombre, email });
+            }
+        }
+
+        // Función para actualizar un usuario
+        async function actualizarUsuario(id, datos) {
+            try {
+                await fetch(`/api/usuarios/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(datos)
+                });
+                cargarUsuarios();
+            } catch (error) {
+                console.error('Error al actualizar usuario:', error);
+            }
+        }
+
+        // Función para eliminar un usuario
+        async function eliminarUsuario(id) {
+            const confirmar = confirm('¿Estás seguro de que deseas eliminar este usuario?');
+            if (confirmar) {
+                try {
+                    await fetch(`/api/usuarios/${id}`, {
+                        method: 'DELETE'
+                    });
+                    cargarUsuarios();
+                } catch (error) {
+                    console.error('Error al eliminar usuario:', error);
+                }
+            }
+        }
+
+
+
+
+        // Cargar usuarios al iniciar
+        cargarUsuarios();
+    </script>
+</body>
+
+</html>
